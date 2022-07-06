@@ -72,6 +72,7 @@ ORDER BY mortality_rate desc;
 -- Global Mortality Rate
 SELECT SUM(new_cases) as total_cases, SUM(new_deaths) as total_deaths, SUM(new_deaths)/SUM(new_cases)*100 as mortality_percentage
 FROM Portfolio_project..covid_deaths;
+WHERE continent <> ''
 
 -- New vaccinations by country from Feb 2, 2020 - July 3, 2022
 -- rolling_people_vaccinated the total number vaccinations for a country by date
@@ -81,7 +82,7 @@ FROM Portfolio_project..covid_deaths death
 JOIN Portfolio_project..covid_vaccinations vaccine
 	ON death.location = vaccine.location
 	and death.date = vaccine.date
-WHERE death.continent is not null 
+WHERE death.continent <> ''
 ORDER BY 2,3;
 
 -- Performing the same calculation as above using CTE
@@ -94,7 +95,7 @@ FROM Portfolio_project..covid_deaths death
 JOIN Portfolio_project..covid_vaccinations vaccine
 	ON death.location = vaccine.location
 	and death.date = vaccine.date
-WHERE death.continent is not null 
+WHERE death.continent <> '' 
 --ORDER BY 2,3
 )
 Select *
@@ -118,7 +119,7 @@ FROM Portfolio_project..covid_deaths death
 JOIN Portfolio_project..covid_vaccinations vaccine
 	ON death.location = vaccine.location
 	and death.date = vaccine.date
-WHERE death.continent is not null 
+WHERE death.continent <> ''
 
 Select *
 From #rolling_vac;
@@ -131,5 +132,5 @@ FROM Portfolio_project..covid_deaths death
 JOIN Portfolio_project..covid_vaccinations vaccine
 	ON death.location = vaccine.location
 	and death.date = vaccine.date
-WHERE death.continent is not null 
+WHERE death.continent <> ''
 
