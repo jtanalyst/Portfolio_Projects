@@ -1,7 +1,9 @@
 /*
-Covid 19 Data Exploration 
+Covid-19 Data Exploration 
+Evaluating COVID case, death and vaccination trends across the world
+View visualization: https://public.tableau.com/app/profile/jessica7726
 Skills used: Joins, Common table expressions (CTE's), Partition, Temp Tables, Windows Functions, Aggregate Functions, Creating Views, Converting Data Types
-Tables used have about 200,000 rows
+Dataset used has about 200,000 rows
 Data is up to July 3rd, 2022
 */
 
@@ -71,6 +73,14 @@ WHERE continent is not null
 GROUP BY Location
 ORDER BY mortality_rate desc;
 
+-- Mortality by Continent (as of July 3rd, 2022)
+-- Total deaths over population by continent in Percent
+SELECT location, population, max(total_deaths) as total_deaths_count, max(total_deaths)/population * 100 as mortality_percentage
+FROM Portfolio_project..covid_deaths
+WHERE location in ('Europe', 'North America', 'Asia', 'South America', 'Africa', 'Oceania')
+GROUP BY location, population
+ORDER BY mortality_percentage desc
+
 -- Global Stats (as of July 3rd, 2022)
 -- Shows total cases, total deaths, case-fatality
 SELECT SUM(new_cases) as total_cases, SUM(new_deaths) as total_deaths, SUM(new_deaths)/SUM(new_cases)*100 as case_fatality
@@ -137,10 +147,3 @@ JOIN Portfolio_project..covid_vaccinations vaccine
 	and death.date = vaccine.date
 WHERE death.continent <> ''
 
--- Mortality by Continent (as of July 3rd, 2022)
--- Total deaths over population by continent in Percent
-SELECT location, population, max(total_deaths) as total_deaths_count, max(total_deaths)/population * 100 as mortality_percentage
-FROM Portfolio_project..covid_deaths
-WHERE location in ('Europe', 'North America', 'Asia', 'South America', 'Africa', 'Oceania')
-GROUP BY location, population
-ORDER BY mortality_percentage desc
